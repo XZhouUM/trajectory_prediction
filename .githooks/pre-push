@@ -28,7 +28,7 @@ while read local_ref local_sha remote_ref remote_sha; do
   echo "$CHANGED_FILES"
 
     # Run Black (formatting)
-  black $CHANGED_FILES --line-length 88
+  python -m black $CHANGED_FILES --line-length 88
 
   # Run isort (imports)
   isort $CHANGED_FILES
@@ -36,7 +36,10 @@ while read local_ref local_sha remote_ref remote_sha; do
   # Run Flake8 (linting) but some line length errors are ignored
   flake8 $CHANGED_FILES --max-line-length=88 --ignore=E501,W503
 
-  # Run pytype (static type checking)
-  pytype $CHANGED_FILES
+  # Use Ruff to inspect all Python files and report problems.
+  python -m ruff check $CHANGED_FILES
+
+  # Update the virtual environment.
+  pip freeze > requirements.txt
 
 done

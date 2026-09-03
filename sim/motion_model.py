@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Optional
 
 import numpy as np
 
@@ -23,7 +22,7 @@ class MotionModel(ABC):
         # The default dimension of the state vector is 4, but it can be overridden by subclasses.
         self.expected_dim = expected_state_dim if expected_state_dim is not None else 4
 
-        # Initialize the state vector to an empty array. This means the motion model can be defined without an initial state, 
+        # Initialize the state vector to an empty array. This means the motion model can be defined without an initial state,
         # and the user can set it later using the setter of state property.
         self._state = np.array([], dtype=float)
 
