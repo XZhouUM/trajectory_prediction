@@ -27,7 +27,7 @@ while read local_ref local_sha remote_ref remote_sha; do
   echo "Running code checks on Python files:"
   echo "$CHANGED_FILES"
 
-    # Run Black (formatting)
+  # Run Black (formatting)
   python -m black $CHANGED_FILES --line-length 88
 
   # Run isort (imports)
