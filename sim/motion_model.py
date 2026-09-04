@@ -16,11 +16,12 @@ class MotionModel(ABC):
     - [acceleration, steering_angle]
     """
 
-    def __init__(self, expected_state_dim: int | None, dt: float = 0.1):
+    def __init__(self, expected_state_dim: int | None, expected_control_dim: int | None, dt: float = 0.1):
         self.name = self.__class__.__name__
         self.dt = float(dt)
-        # The default dimension of the state vector is 4, but it can be overridden by subclasses.
+        # The default dimension of the state vector and control vector is set to 4 and 2, respectively, if not provided.
         self.expected_dim = expected_state_dim if expected_state_dim is not None else 4
+        self.expected_control_dim = expected_control_dim if expected_control_dim is not None else 2
 
         # Initialize the state vector to an empty array. This means the motion model can be defined without an initial state,
         # and the user can set it later using the setter of state property.
@@ -45,17 +46,25 @@ class MotionModel(ABC):
 
     @staticmethod
     @abstractmethod
-    def transition(state: np.ndarray, control: np.ndarray) -> np.ndarray:
+    def transition(control: np.ndarray) -> np.ndarray:
         """Return the next state vector from the current state and control input."""
         raise NotImplementedError
 
     def step(self, control: np.ndarray) -> np.ndarray:
         """Advance the model by one time step using the given control input."""
+        # Validate the state and control before proceeding with the transition through the state equation.
+        if self._state.size == np.array([]).size:
+            raise ValueError("System state is not initialized. Please set the state before calling step().")
+        
         control_vector = np.asarray(control, dtype=float)
         if control_vector.ndim != 1:
             raise ValueError(
                 f"Control must be a 1D vector, got shape {control_vector.shape}."
             )
+        if control_vector.shape[0] != self.expected_control_dim:
+            raise ValueError(
+                f"Expected control dimension {self.expected_control_dim}, got {control_vector.shape[0]}."
+            )
 
-        self.state = self.transition(self.state, control_vector)
+        self.state = self.transition(control_vector)
         return self.state
