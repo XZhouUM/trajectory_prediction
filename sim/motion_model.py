@@ -23,7 +23,7 @@ class MotionModel(ABC):
         dt: float = 0.1,
     ):
         self.name = self.__class__.__name__
-        self.dt = float(dt)
+        self._dt = float(dt)
         # The default dimension of the state vector and control vector is set to 4 and 2, respectively, if not provided.
         self.expected_dim = expected_state_dim if expected_state_dim is not None else 4
         self.expected_control_dim = (
@@ -50,9 +50,8 @@ class MotionModel(ABC):
             )
         self._state = state_vector
 
-    @staticmethod
     @abstractmethod
-    def transition(control: np.ndarray) -> np.ndarray:
+    def transition(self, state: np.ndarray, control: np.ndarray) -> np.ndarray:
         """Return the next state vector from the current state and control input."""
         raise NotImplementedError
 
@@ -74,5 +73,5 @@ class MotionModel(ABC):
                 f"Expected control dimension {self.expected_control_dim}, got {control_vector.shape[0]}."
             )
 
-        self.state = self.transition(control_vector)
+        self.state = self.transition(self._state, control_vector)
         return self.state
