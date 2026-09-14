@@ -168,14 +168,14 @@ def main() -> None:
 
     # Define a few representative initial states and control sequences.
     initial_states = {
-        "straight": np.array([0.0, 0.0, 0.0, 5.0]),  # x, y, theta, v
-        "left_turn": np.array([0.0, 0.0, 0.0, 5.0]),
-        "right_turn": np.array([0.0, 0.0, 0.0, 5.0]),
+        "straight": np.array([0.0, 0.0, 5.0, 0.0]),  # x, y, v, psi
+        "left_turn": np.array([0.0, 0.0, 5.0, 0.0]),
+        "right_turn": np.array([0.0, 0.0, 5.0, 0.0]),
     }
     controls = {
-        "straight": np.tile(np.array([0.0, 0.0]), (50, 1)),  # steering, acceleration
-        "left_turn": np.tile(np.array([0.2, 0.0]), (50, 1)),
-        "right_turn": np.tile(np.array([-0.2, 0.0]), (50, 1)),
+        "straight": np.tile(np.array([0.0, 0.0]), (50, 1)),  # [a, delta]
+        "left_turn": np.tile(np.array([0.0, 0.2]), (50, 1)),
+        "right_turn": np.tile(np.array([0.0, -0.2]), (50, 1)),
     }
 
     trajectories = {

@@ -10,7 +10,7 @@ class MotionModel(ABC):
 
     The vehicle state is stored as a 1D NumPy vector, for example:
     - [x, y, vx, vy]
-    - [x, y, heading, speed]
+    - [x, y, speed, heading]
 
     The control input is also a 1D NumPy vector, typically:
     - [acceleration, steering_angle]
