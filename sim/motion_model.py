@@ -18,17 +18,13 @@ class MotionModel(ABC):
 
     def __init__(
         self,
-        expected_state_dim: int | None,
-        expected_control_dim: int | None,
         dt: float = 0.1,
     ):
         self.name = self.__class__.__name__
         self._dt = float(dt)
-        # The default dimension of the state vector and control vector is set to 4 and 2, respectively, if not provided.
-        self.expected_dim = expected_state_dim if expected_state_dim is not None else 4
-        self.expected_control_dim = (
-            expected_control_dim if expected_control_dim is not None else 2
-        )
+        # The default dimension of the state vector and control vector is set to 4 and 2, respectively.
+        self.expected_dim = 4
+        self.expected_control_dim = 2
 
         # Initialize the state vector to an empty array. This means the motion model can be defined without an initial state, and the user can set it later using the setter of state property.
         self._state = np.array([], dtype=float)

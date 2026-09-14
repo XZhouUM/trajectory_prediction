@@ -18,7 +18,7 @@ class KinematicBicycleModel(MotionModel):
         dt: float = 0.1,
         L: float = 2.5,
     ):
-        super().__init__(expected_state_dim=4, expected_control_dim=2, dt=dt)
+        super().__init__(dt=dt)
         self._L = float(L)
 
     def transition(self, state: np.ndarray, control: np.ndarray) -> np.ndarray:
