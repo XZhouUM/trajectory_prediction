@@ -10,7 +10,7 @@ class MotionModel(ABC):
 
     The vehicle state is stored as a 1D NumPy vector, for example:
     - [x, y, vx, vy]
-    - [x, y, heading, speed]
+    - [x, y, speed, heading]
 
     The control input is also a 1D NumPy vector, typically:
     - [acceleration, steering_angle]
@@ -18,17 +18,13 @@ class MotionModel(ABC):
 
     def __init__(
         self,
-        expected_state_dim: int | None,
-        expected_control_dim: int | None,
         dt: float = 0.1,
     ):
         self.name = self.__class__.__name__
-        self.dt = float(dt)
-        # The default dimension of the state vector and control vector is set to 4 and 2, respectively, if not provided.
-        self.expected_dim = expected_state_dim if expected_state_dim is not None else 4
-        self.expected_control_dim = (
-            expected_control_dim if expected_control_dim is not None else 2
-        )
+        self._dt = float(dt)
+        # The default dimension of the state vector and control vector is set to 4 and 2, respectively.
+        self.expected_dim = 4
+        self.expected_control_dim = 2
 
         # Initialize the state vector to an empty array. This means the motion model can be defined without an initial state, and the user can set it later using the setter of state property.
         self._state = np.array([], dtype=float)
@@ -50,9 +46,8 @@ class MotionModel(ABC):
             )
         self._state = state_vector
 
-    @staticmethod
     @abstractmethod
-    def transition(control: np.ndarray) -> np.ndarray:
+    def transition(self, state: np.ndarray, control: np.ndarray) -> np.ndarray:
         """Return the next state vector from the current state and control input."""
         raise NotImplementedError
 
@@ -74,5 +69,5 @@ class MotionModel(ABC):
                 f"Expected control dimension {self.expected_control_dim}, got {control_vector.shape[0]}."
             )
 
-        self.state = self.transition(control_vector)
+        self.state = self.transition(self._state, control_vector)
         return self.state
