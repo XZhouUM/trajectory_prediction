@@ -37,7 +37,6 @@ class KinematicBicycleModel(MotionModel):
         psi(k+1) = psi(k) + (v(k) / L) * tan(delta(k)) * dt
         """
 
-
         x, y, v, psi = state
         a, delta = control
 

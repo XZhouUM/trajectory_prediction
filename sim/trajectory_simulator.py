@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import Dict, Iterable, Mapping, Sequence
+from typing import Mapping
 
 import numpy as np
 
@@ -11,8 +11,8 @@ if __package__ in (None, ""):
     if project_root not in sys.path:
         sys.path.insert(0, project_root)
 
-from sim.motion_model import MotionModel
 from sim.model_registry import MODEL_REGISTRY
+from sim.motion_model import MotionModel
 
 try:
     import matplotlib.pyplot as plt
@@ -181,7 +181,9 @@ def main() -> None:
 
     trajectories = {
         name: simulator.simulate(initial_state=state, controls=control)
-        for name, state, control in zip(initial_states.keys(), initial_states.values(), controls.values())
+        for name, state, control in zip(
+            initial_states.keys(), initial_states.values(), controls.values()
+        )
     }
 
     for name, states in trajectories.items():
