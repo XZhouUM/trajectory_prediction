@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import Mapping
+from collections.abc import Mapping
 
 import numpy as np
 
@@ -15,7 +15,7 @@ from sim.model_registry import MODEL_REGISTRY
 
 try:
     import matplotlib.pyplot as plt
-except Exception:  # pragma: no cover - exercised only when dependency is absent
+except ImportError:  # pragma: no cover - exercised only when dependency is absent
     plt = None
 
 
