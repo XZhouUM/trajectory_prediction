@@ -12,7 +12,6 @@ if __package__ in (None, ""):
         sys.path.insert(0, project_root)
 
 from sim.model_registry import MODEL_REGISTRY
-from sim.motion_model import MotionModel
 
 try:
     import matplotlib.pyplot as plt
