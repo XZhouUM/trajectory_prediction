@@ -1,4 +1,3 @@
-
 from .mlp import MLP
 from .transformer import Transformer
 
@@ -14,8 +13,7 @@ def build_model(name: str, **kwargs):
     except KeyError as exc:
         available = ", ".join(MODEL_REGISTRY)
         raise ValueError(
-            f"Unknown model '{name}'. "
-            f"Available models: {available}"
+            f"Unknown model '{name}'. " f"Available models: {available}"
         ) from exc
 
     return model_class(**kwargs)

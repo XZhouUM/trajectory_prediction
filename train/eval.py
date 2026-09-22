@@ -7,28 +7,16 @@ import sys
 from pathlib import Path
 
 try:
-    from train.utils import (
-        build_model,
-        load_checkpoint,
-        make_dataset,
-        make_loader,
-        read_trajectories,
-        run_epoch,
-        select_device,
-    )
+    from train.utils import (build_model, load_checkpoint, make_dataset,
+                             make_loader, read_trajectories, run_epoch,
+                             select_device)
 except ModuleNotFoundError:
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
     if str(PROJECT_ROOT) not in sys.path:
         sys.path.insert(0, str(PROJECT_ROOT))
-    from train.utils import (
-        build_model,
-        load_checkpoint,
-        make_dataset,
-        make_loader,
-        read_trajectories,
-        run_epoch,
-        select_device,
-    )
+    from train.utils import (build_model, load_checkpoint, make_dataset,
+                             make_loader, read_trajectories, run_epoch,
+                             select_device)
 
 
 def parse_args() -> argparse.Namespace:
