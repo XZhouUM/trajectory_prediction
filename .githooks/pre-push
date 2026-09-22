@@ -33,8 +33,9 @@ while read local_ref local_sha remote_ref remote_sha; do
   # Run isort (imports)
   isort $CHANGED_FILES
 
-  # Run Flake8 (linting) but some line length errors are ignored
-  flake8 $CHANGED_FILES --max-line-length=88 --ignore=E501,W503
+  # Run Flake8 (linting) but some line length errors and E203 (slice spacing)
+  # are ignored to allow Black-compatible slicing style.
+  flake8 $CHANGED_FILES --max-line-length=88 --ignore=E501,W503,E203
 
   # Use Ruff to inspect all Python files and report problems.
   python -m ruff check $CHANGED_FILES
