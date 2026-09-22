@@ -13,14 +13,22 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
-
-from data.generate_dataset import load_trajectory_split
-from data.trajectory_dataset import TrajectoryDataset
-from models.mlp import MLP
-from models.transformer import Transformer
+try:
+    # Prefer normal imports when the package is available on sys.path.
+    from data.generate_dataset import load_trajectory_split
+    from data.trajectory_dataset import TrajectoryDataset
+    from models.mlp import MLP
+    from models.transformer import Transformer
+except ModuleNotFoundError:
+    # Support running scripts from the repository root (``python -m train.utils``
+    # or direct execution) by inserting the project root into sys.path.
+    PROJECT_ROOT = Path(__file__).resolve().parents[1]
+    if str(PROJECT_ROOT) not in sys.path:
+        sys.path.insert(0, str(PROJECT_ROOT))
+    from data.generate_dataset import load_trajectory_split
+    from data.trajectory_dataset import TrajectoryDataset
+    from models.mlp import MLP
+    from models.transformer import Transformer
 
 
 def seed_everything(seed: int) -> None:
