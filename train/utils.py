@@ -107,9 +107,7 @@ class NormalizedDataset(Dataset):
         return history, target
 
 
-def make_loader(
-    dataset: Dataset, batch_size: int, shuffle: bool
-) -> DataLoader:
+def make_loader(dataset: Dataset, batch_size: int, shuffle: bool) -> DataLoader:
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
 
 

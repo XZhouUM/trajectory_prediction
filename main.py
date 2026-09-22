@@ -9,9 +9,9 @@ Examples from the project root::
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Callable
 
 import torch
 
@@ -153,9 +153,7 @@ def run_pipeline(
                 config.checkpoint,
             )
 
-    checkpoint = torch.load(
-        config.checkpoint, map_location=device, weights_only=False
-    )
+    checkpoint = torch.load(config.checkpoint, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     eval_loss = evaluate(model, eval_loader, device)
     metrics = {
@@ -170,15 +168,15 @@ def run_pipeline(
     print(f"Eval MSE: {eval_loss:.6f}")
 
     if visualization_callback is not None:
-        visualization_callback(
-            model, eval_trajectories, config, normalization, device
-        )
+        visualization_callback(model, eval_trajectories, config, normalization, device)
     return metrics
 
 
 def _parse_args() -> PipelineConfig:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=("transformer", "mlp"), default="transformer")
+    parser.add_argument(
+        "--model", choices=("transformer", "mlp"), default="transformer"
+    )
     parser.add_argument("--data-dir", type=Path, default=PipelineConfig.data_dir)
     parser.add_argument("--checkpoint", type=Path, default=PipelineConfig.checkpoint)
     parser.add_argument("--history-len", type=int, default=20)
