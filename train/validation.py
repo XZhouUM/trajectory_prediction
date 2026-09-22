@@ -100,7 +100,12 @@ def build_validation_metrics(
             x_index = target_indices.index(0)
             y_index = target_indices.index(1)
 
-            def fde(prediction: Tensor, target: Tensor) -> Tensor:
+            def fde(
+                prediction: Tensor,
+                target: Tensor,
+                x_index: int = x_index,
+                y_index: int = y_index,
+            ) -> Tensor:
                 prediction_real = denormalize(prediction)
                 target_real = denormalize(target)
                 delta = (
