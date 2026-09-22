@@ -106,6 +106,15 @@ def make_loader(dataset: Dataset, batch_size: int, shuffle: bool) -> DataLoader:
     return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
 
 
+def load_checkpoint(path: Path, device: torch.device) -> dict[str, Any]:
+    if not path.is_file():
+        raise FileNotFoundError(f"Checkpoint not found: {path}")
+    try:
+        return torch.load(path, map_location=device, weights_only=False)
+    except TypeError:  # Compatibility with older PyTorch versions.
+        return torch.load(path, map_location=device)
+
+
 def build_model(config: dict[str, Any]) -> torch.nn.Module:
     """Construct a selected model; kept in orchestration, outside train/eval."""
     name = config["model"].lower()
