@@ -15,17 +15,15 @@ from pathlib import Path
 import torch
 
 try:
-    from train.utils import (
-        build_model,
-        compute_normalization,
-        load_metadata,
-        make_dataset,
-        make_loader,
-        read_trajectories,
-        run_epoch,
-        seed_everything,
-        select_device,
-    )
+    from train.utils import build_model
+    from train.utils import compute_normalization
+    from train.utils import load_metadata
+    from train.utils import make_dataset
+    from train.utils import make_loader
+    from train.utils import read_trajectories
+    from train.utils import run_epoch
+    from train.utils import seed_everything
+    from train.utils import select_device
 except ModuleNotFoundError:
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
     if str(PROJECT_ROOT) not in sys.path:
