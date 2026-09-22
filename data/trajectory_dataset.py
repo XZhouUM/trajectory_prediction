@@ -19,17 +19,14 @@ class TrajectoryDataset(Dataset):
         for trajectory in trajectories:
             num_frames = len(trajectory)
 
-            for start in range(
-                num_frames - history_len - prediction_len + 1
-            ):
+            for start in range(num_frames - history_len - prediction_len + 1):
                 history = trajectory[
                     start : start + history_len,
                     input_indices,
                 ]
 
                 future = trajectory[
-                    start + history_len :
-                    start + history_len + prediction_len,
+                    start + history_len : start + history_len + prediction_len,
                     target_indices,
                 ]
 

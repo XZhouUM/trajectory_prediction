@@ -101,7 +101,14 @@ def simulate_trajectories(
 
     rng = np.random.default_rng(seed)
     simulator = TrajectorySimulator(model_name=model_name, dt=dt)
-    maneuver_names = ("steady", "accelerate", "brake", "turn_left", "turn_right", "lane_change")
+    maneuver_names = (
+        "steady",
+        "accelerate",
+        "brake",
+        "turn_left",
+        "turn_right",
+        "lane_change",
+    )
     maneuver_ids = np.arange(num_trajectories) % len(maneuver_names)
     rng.shuffle(maneuver_ids)
 
@@ -111,8 +118,12 @@ def simulate_trajectories(
         maneuver = maneuver_names[int(maneuver_id)]
         # Small variation in starting pose and speed prevents memorizing one setup.
         initial_state = np.array(
-            [rng.uniform(-5.0, 5.0), rng.uniform(-2.0, 2.0),
-             rng.uniform(4.0, 16.0), rng.uniform(-0.12, 0.12)],
+            [
+                rng.uniform(-5.0, 5.0),
+                rng.uniform(-2.0, 2.0),
+                rng.uniform(4.0, 16.0),
+                rng.uniform(-0.12, 0.12),
+            ],
             dtype=np.float64,
         )
         controls = _smooth_control_profile(rng, num_steps, maneuver)
@@ -147,7 +158,7 @@ def split_trajectories(
     indices = np.random.default_rng(seed).permutation(count)
     boundaries = (train_count, train_count + eval_count)
     index_groups = (
-        indices[:boundaries[0]],
+        indices[: boundaries[0]],
         indices[boundaries[0] : boundaries[1]],
         indices[boundaries[1] :],
     )
@@ -188,9 +199,7 @@ def save_splits(
         "state_columns": list(STATE_COLUMNS),
         "control_columns": list(CONTROL_COLUMNS),
         "trajectory_count": total,
-        "split_counts": {
-            name: int(len(splits[name][0])) for name in SPLIT_NAMES
-        },
+        "split_counts": {name: int(len(splits[name][0])) for name in SPLIT_NAMES},
         "split_ratio": "7:2:1",
         "seed": int(seed),
         "trajectory_file_format": "NumPy .npz; trajectories has shape (N, frames, 4)",
@@ -231,9 +240,7 @@ def generate_dataset(
         model_name=model_name,
     )
     splits = split_trajectories(trajectories, labels, seed=seed + 1)
-    return save_splits(
-        splits, output_dir, dt=dt, seed=seed, model_name=model_name
-    )
+    return save_splits(splits, output_dir, dt=dt, seed=seed, model_name=model_name)
 
 
 def main() -> None:

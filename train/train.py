@@ -18,24 +18,24 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from train.utils import (
-    build_model,
-    compute_normalization,
-    load_metadata,
-    make_dataset,
-    make_loader,
-    read_trajectories,
-    run_epoch,
-    seed_everything,
-    select_device,
-)
+from train.utils import (build_model, compute_normalization, load_metadata,
+                         make_dataset, make_loader, read_trajectories,
+                         run_epoch, seed_everything, select_device)
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=("transformer", "mlp"), default="transformer")
-    parser.add_argument("--data-dir", type=Path, default=PROJECT_ROOT / "data" / "generated")
-    parser.add_argument("--checkpoint", type=Path, default=PROJECT_ROOT / "models" / "checkpoints" / "best.pt")
+    parser.add_argument(
+        "--model", choices=("transformer", "mlp"), default="transformer"
+    )
+    parser.add_argument(
+        "--data-dir", type=Path, default=PROJECT_ROOT / "data" / "generated"
+    )
+    parser.add_argument(
+        "--checkpoint",
+        type=Path,
+        default=PROJECT_ROOT / "models" / "checkpoints" / "best.pt",
+    )
     parser.add_argument("--history-len", type=int, default=20)
     parser.add_argument("--prediction-len", type=int, default=10)
     parser.add_argument("--input-indices", type=int, nargs="+", default=[0, 1, 2, 3])
@@ -45,9 +45,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=1e-5)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--device", default="auto", help="auto, cpu, cuda, or a torch device name")
+    parser.add_argument(
+        "--device", default="auto", help="auto, cpu, cuda, or a torch device name"
+    )
     parser.add_argument("--hidden-dim", type=int, default=128, help="MLP hidden width")
-    parser.add_argument("--d-model", type=int, default=64, help="Transformer embedding width")
+    parser.add_argument(
+        "--d-model", type=int, default=64, help="Transformer embedding width"
+    )
     parser.add_argument("--nhead", type=int, default=4)
     parser.add_argument("--num-layers", type=int, default=3)
     parser.add_argument("--dim-feedforward", type=int, default=128)
@@ -107,7 +111,9 @@ def main() -> None:
     best_validation_loss = float("inf")
     data_metadata = load_metadata(args.data_dir)
     print(f"Device: {device}")
-    print(f"Training windows: {len(train_dataset)}; validation windows: {len(validation_dataset)}")
+    print(
+        f"Training windows: {len(train_dataset)}; validation windows: {len(validation_dataset)}"
+    )
 
     for epoch in range(1, args.epochs + 1):
         train_metrics = run_epoch(model, train_loader, device, normalization, optimizer)
@@ -131,7 +137,9 @@ def main() -> None:
             }
             torch.save(checkpoint, args.checkpoint)
 
-    print(f"Best checkpoint saved to {args.checkpoint} (validation MSE {best_validation_loss:.6f})")
+    print(
+        f"Best checkpoint saved to {args.checkpoint} (validation MSE {best_validation_loss:.6f})"
+    )
 
 
 if __name__ == "__main__":
