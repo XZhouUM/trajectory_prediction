@@ -16,8 +16,8 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
 import numpy as np
 
@@ -199,7 +199,7 @@ def save_splits(
         "state_columns": list(STATE_COLUMNS),
         "control_columns": list(CONTROL_COLUMNS),
         "trajectory_count": total,
-        "split_counts": {name: int(len(splits[name][0])) for name in SPLIT_NAMES},
+        "split_counts": {name: len(splits[name][0]) for name in SPLIT_NAMES},
         "split_ratio": "7:2:1",
         "seed": int(seed),
         "trajectory_file_format": "NumPy .npz; trajectories has shape (N, frames, 4)",
