@@ -15,16 +15,32 @@ from pathlib import Path
 import torch
 
 try:
-    from train.utils import (build_model, compute_normalization, load_metadata,
-                             make_dataset, make_loader, read_trajectories,
-                             run_epoch, seed_everything, select_device)
+    from train.utils import (
+        build_model,
+        compute_normalization,
+        load_metadata,
+        make_dataset,
+        make_loader,
+        read_trajectories,
+        run_epoch,
+        seed_everything,
+        select_device,
+    )
 except ModuleNotFoundError:
     PROJECT_ROOT = Path(__file__).resolve().parents[1]
     if str(PROJECT_ROOT) not in sys.path:
         sys.path.insert(0, str(PROJECT_ROOT))
-    from train.utils import (build_model, compute_normalization, load_metadata,
-                             make_dataset, make_loader, read_trajectories,
-                             run_epoch, seed_everything, select_device)
+    from train.utils import (
+        build_model,
+        compute_normalization,
+        load_metadata,
+        make_dataset,
+        make_loader,
+        read_trajectories,
+        run_epoch,
+        seed_everything,
+        select_device,
+    )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
