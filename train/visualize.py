@@ -13,8 +13,6 @@ import argparse
 from pathlib import Path
 
 import matplotlib
-
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import torch
 
@@ -34,6 +32,7 @@ def visualize_prediction(
     show: bool = False,
 ) -> Path:
     """Create an x-y overlay of observed history, true future, and prediction."""
+    matplotlib.use("Agg")
     device = select_device(device_name)
     checkpoint = load_checkpoint(checkpoint_path, device)
     config = checkpoint["config"]
