@@ -87,16 +87,28 @@ def visualize_prediction(
 
     fig, ax = plt.subplots(figsize=(8, 6))
     ax.plot(
-        history_xy[:, 0], history_xy[:, 1],
-        color="tab:blue", marker="o", markersize=3, label="Observed history",
+        history_xy[:, 0],
+        history_xy[:, 1],
+        color="tab:blue",
+        marker="o",
+        markersize=3,
+        label="Observed history",
     )
     ax.plot(
-        future_xy[:, 0], future_xy[:, 1],
-        color="tab:green", marker="o", markersize=3, label="Ground-truth future",
+        future_xy[:, 0],
+        future_xy[:, 1],
+        color="tab:green",
+        marker="o",
+        markersize=3,
+        label="Ground-truth future",
     )
     ax.plot(
-        predicted_xy[:, 0], predicted_xy[:, 1],
-        color="tab:red", marker="o", markersize=3, linestyle="--",
+        predicted_xy[:, 0],
+        predicted_xy[:, 1],
+        color="tab:red",
+        marker="o",
+        markersize=3,
+        linestyle="--",
         label="Predicted future",
     )
     ax.scatter(*history_xy[0], color="black", marker="s", s=35, label="Window start")
@@ -135,13 +147,19 @@ def main() -> None:
         type=Path,
         default=PROJECT_ROOT / "models" / "checkpoints" / "best.pt",
     )
-    parser.add_argument("--data-dir", type=Path, default=PROJECT_ROOT / "data" / "generated")
-    parser.add_argument("--split", choices=("eval", "validation", "train"), default="eval")
+    parser.add_argument(
+        "--data-dir", type=Path, default=PROJECT_ROOT / "data" / "generated"
+    )
+    parser.add_argument(
+        "--split", choices=("eval", "validation", "train"), default="eval"
+    )
     parser.add_argument("--trajectory-index", type=int, default=0)
     parser.add_argument("--start-frame", type=int, default=0)
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--show", action="store_true", help="also display the plot interactively")
+    parser.add_argument(
+        "--show", action="store_true", help="also display the plot interactively"
+    )
     args = parser.parse_args()
     output = visualize_prediction(
         checkpoint_path=args.checkpoint,

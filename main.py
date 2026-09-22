@@ -138,9 +138,7 @@ def run_pipeline(config: PipelineConfig) -> dict[str, float]:
 
     config.checkpoint.parent.mkdir(parents=True, exist_ok=True)
     config.results_dir.mkdir(parents=True, exist_ok=True)
-    best_monitor_value = (
-        float("inf") if config.monitor_mode == "min" else -float("inf")
-    )
+    best_monitor_value = float("inf") if config.monitor_mode == "min" else -float("inf")
     best_epoch = 0
     history: list[dict[str, float]] = []
     print(f"Device: {device}")
@@ -157,7 +155,9 @@ def run_pipeline(config: PipelineConfig) -> dict[str, float]:
         history_row = {
             "epoch": float(epoch),
             "train_normalized_mse": train_loss,
-            **{f"validation_{name}": value for name, value in validation_scores.items()},
+            **{
+                f"validation_{name}": value for name, value in validation_scores.items()
+            },
         }
         history.append(history_row)
         print(
@@ -191,9 +191,7 @@ def run_pipeline(config: PipelineConfig) -> dict[str, float]:
                 config.checkpoint,
             )
 
-    checkpoint = torch.load(
-        config.checkpoint, map_location=device, weights_only=False
-    )
+    checkpoint = torch.load(config.checkpoint, map_location=device, weights_only=False)
     model.load_state_dict(checkpoint["model_state_dict"])
     eval_loss = evaluate(model, eval_loader, device)
     eval_scores = validate(model, eval_loader, device, validation_metric_functions)
@@ -240,7 +238,9 @@ def run_pipeline(config: PipelineConfig) -> dict[str, float]:
 
 def _parse_args() -> PipelineConfig:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=("transformer", "mlp"), default="transformer")
+    parser.add_argument(
+        "--model", choices=("transformer", "mlp"), default="transformer"
+    )
     parser.add_argument("--data-dir", type=Path, default=PipelineConfig.data_dir)
     parser.add_argument("--checkpoint", type=Path, default=PipelineConfig.checkpoint)
     parser.add_argument("--results-dir", type=Path, default=PipelineConfig.results_dir)

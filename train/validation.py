@@ -68,11 +68,19 @@ def build_validation_metrics(
     for name in names:
         if name == "mse":
             metrics[name] = lambda pred, target: (
-                (denormalize(pred) - denormalize(target)).square().flatten(1).mean(1).mean()
+                (denormalize(pred) - denormalize(target))
+                .square()
+                .flatten(1)
+                .mean(1)
+                .mean()
             )
         elif name == "mae":
             metrics[name] = lambda pred, target: (
-                (denormalize(pred) - denormalize(target)).abs().flatten(1).mean(1).mean()
+                (denormalize(pred) - denormalize(target))
+                .abs()
+                .flatten(1)
+                .mean(1)
+                .mean()
             )
         elif name == "rmse":
             metrics[name] = lambda pred, target: (
@@ -95,9 +103,10 @@ def build_validation_metrics(
             def fde(prediction: Tensor, target: Tensor) -> Tensor:
                 prediction_real = denormalize(prediction)
                 target_real = denormalize(target)
-                delta = prediction_real[:, -1, [x_index, y_index]] - target_real[
-                    :, -1, [x_index, y_index]
-                ]
+                delta = (
+                    prediction_real[:, -1, [x_index, y_index]]
+                    - target_real[:, -1, [x_index, y_index]]
+                )
                 return torch.linalg.vector_norm(delta, dim=-1).mean()
 
             metrics[name] = fde
