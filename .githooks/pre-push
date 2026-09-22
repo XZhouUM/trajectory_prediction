@@ -28,16 +28,18 @@ while read local_ref local_sha remote_ref remote_sha; do
   echo "$CHANGED_FILES"
 
   # Run Black (formatting)
+  # Reformat imports and code: isort then Black (isort first to give Black stable input)
+  isort $CHANGED_FILES
   python -m black $CHANGED_FILES --line-length 88
 
-  # Run isort (imports)
-  isort $CHANGED_FILES
+  # Let Ruff apply auto-fixes (including import formatting) so Ruff, isort, and Black agree
+  python -m ruff check --fix $CHANGED_FILES || true
 
   # Run Flake8 (linting) but some line length errors and E203 (slice spacing)
   # are ignored to allow Black-compatible slicing style.
   flake8 $CHANGED_FILES --max-line-length=88 --ignore=E501,W503,E203
 
-  # Use Ruff to inspect all Python files and report problems.
+  # Final Ruff check to report any remaining problems
   python -m ruff check $CHANGED_FILES
 
   # Update the virtual environment.
